@@ -10,6 +10,7 @@ import pandas as pd
 import helper 
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
+from sklearn.compose import make_column_transformer
 import os 
 import numpy as np
 import autoencoder
@@ -42,7 +43,10 @@ def evaluate(model, valid_X, attack_path, output_file):
 label_encoder_1 = preprocessing.LabelEncoder()
 label_encoder_2 = preprocessing.LabelEncoder()
 label_encoder_3 = preprocessing.LabelEncoder()
-one_hot_encoder = preprocessing.OneHotEncoder(categorical_features = [1,2,3])
+one_hot_encoder = make_column_transformer(
+    (preprocessing.OneHotEncoder(), [1, 2, 3]),
+    remainder="passthrough"
+)
 
 def read_kdd_dataset(path):
     global label_encoder_1, label_encoder_2, label_encoder_3, one_hot_encoder
